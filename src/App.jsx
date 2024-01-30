@@ -7,6 +7,8 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   async function fetchCountries() {
     try {
       setIsError(false);
@@ -29,19 +31,42 @@ export default function App() {
 
   return (
     <div className="wrapper">
-      {isLoading && <Loader />}
-      {isError && <Error />}
-      {!isLoading && !isError && <Country data={data} />}
+      <div className="content">
+        {isLoading && <Loader />}
+        {isError && <Error />}
+        {!isLoading && !isError && (
+          <Country data={data} setIsModalOpen={setIsModalOpen} />
+        )}
+        {isModalOpen && <Modal />}
+      </div>
     </div>
   );
 }
 
-function Country({ data }) {
+function Country({ data, setIsModalOpen }) {
   return (
-    <div className="country__box">
+    <>
       {data.map((country) => (
-        <p key={country.name.common}>{country.name.common}</p>
+        <div
+          className="country__box"
+          key={country.name.common}
+          onClick={() => {
+            setIsModalOpen(true);
+          }}
+        >
+          <p>{country.name.common}</p>
+        </div>
       ))}
+    </>
+  );
+}
+
+function Modal() {
+  return (
+    <div className="overlay">
+      <div className="modal">
+        <p>modal</p>
+      </div>
     </div>
   );
 }
