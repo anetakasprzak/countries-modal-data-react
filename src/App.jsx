@@ -6,6 +6,7 @@ export default function App() {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [clickedCountry, setClickedCountry] = useState("");
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -22,6 +23,7 @@ export default function App() {
       console.error(err);
     } finally {
       setIsLoading(false);
+      console.log(data);
     }
   }
 
@@ -29,43 +31,78 @@ export default function App() {
     fetchCountries();
   }, []);
 
+  const selectedCountry = data?.find(
+    (country) => country.name.common === clickedCountry
+  );
+
   return (
     <div className="wrapper">
       <div className="content">
         {isLoading && <Loader />}
         {isError && <Error />}
         {!isLoading && !isError && (
-          <Country data={data} setIsModalOpen={setIsModalOpen} />
+          <Countries
+            data={data}
+            setIsModalOpen={setIsModalOpen}
+            setClickedCountry={setClickedCountry}
+          />
         )}
-        {isModalOpen && <Modal />}
+        {isModalOpen && (
+          <Modal
+            setIsModalOpen={setIsModalOpen}
+            selectedCountry={selectedCountry}
+          />
+        )}
       </div>
     </div>
   );
 }
 
-function Country({ data, setIsModalOpen }) {
+function Countries({ data, setIsModalOpen, setClickedCountry }) {
   return (
     <>
       {data.map((country) => (
-        <div
-          className="country__box"
+        <Country
           key={country.name.common}
-          onClick={() => {
-            setIsModalOpen(true);
-          }}
-        >
-          <p>{country.name.common}</p>
-        </div>
+          country={country}
+          setIsModalOpen={setIsModalOpen}
+          setClickedCountry={setClickedCountry}
+        />
       ))}
     </>
   );
 }
 
-function Modal() {
+function Country({ country, setIsModalOpen, setClickedCountry }) {
+  return (
+    <div
+      className="country__box"
+      onClick={() => {
+        setIsModalOpen(true);
+        setClickedCountry(country.name.common);
+      }}
+    >
+      <p>{country.name.common}</p>
+    </div>
+  );
+}
+
+function Modal({ setIsModalOpen, selectedCountry }) {
   return (
     <div className="overlay">
       <div className="modal">
-        <p>modal</p>
+        <div className="icon__box" onClick={() => setIsModalOpen(false)}>
+          <img
+            className="modal__close-icon"
+            src="../public/icon-close-menu.svg"
+          />
+        </div>
+        <img className="modal__img" src={selectedCountry.flags.png} />
+
+        <p>{selectedCountry.name.common}</p>
+        <p>Capital: {selectedCountry.capital}</p>
+
+        <p>Population: {selectedCountry.population}</p>
       </div>
     </div>
   );
