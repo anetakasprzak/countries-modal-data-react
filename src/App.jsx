@@ -29,6 +29,7 @@ export default function App() {
 
   useEffect(function () {
     fetchCountries();
+    console.log(data);
   }, []);
 
   const selectedCountry = data?.find(
@@ -98,11 +99,11 @@ function Modal({ setIsModalOpen, selectedCountry }) {
           />
         </div>
         <img className="modal__img" src={selectedCountry.flags.png} />
-
-        <p>{selectedCountry.name.common}</p>
-        <p>Capital: {selectedCountry.capital}</p>
-
-        <p>Population: {selectedCountry.population}</p>
+        <div className="modal__text--box">
+          <p>{selectedCountry.name.common}</p>
+          <p>Capital: {selectedCountry.capital}</p>
+          <p>Population: {selectedCountry.population}</p>
+        </div>
       </div>
     </div>
   );
