@@ -19,6 +19,7 @@ body {
   font-size: 1.6rem;
   line-height: 1.5;
   font-weight: 400;
+  background-color: rgba(64, 61, 66, 0.095);
 }
 
 img,
@@ -31,8 +32,7 @@ video {
 }
 
 .wrapper {
-  height: auto;
-  background-color: rgba(64, 61, 66, 0.095);
+  height: 100vh;
   display: grid;
   place-items: center;
 
@@ -50,10 +50,19 @@ video {
 
 .country__box {
   border: 1px solid #000;
+  border-radius: 0.3rem;
   padding: 1rem;
   background-color: #fff;
   text-align: center;
   box-shadow: 1px 14px 20px 0px rgba(32, 31, 31, 0.16);
+
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.country__box:hover {
+  transform: scale(1.2);
+  border: 1px solid rgb(221, 11, 11);
 }
 
 .overlay {
